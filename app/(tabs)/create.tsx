@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function dashboard() {
+export default function create() {
   return (
     <View>
-      <Text>dashboard</Text>
+      <Text>create</Text>
     </View>
   )
 }

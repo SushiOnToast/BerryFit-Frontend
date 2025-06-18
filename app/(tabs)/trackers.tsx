@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function dashboard() {
+export default function trackers() {
   return (
     <View>
-      <Text>dashboard</Text>
+      <Text>trackers</Text>
     </View>
   )
 }

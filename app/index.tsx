@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import "./globals.css"
+import "../global.css"
 import { Redirect } from "expo-router";
 
 export default function Index() {

@@ -7,22 +7,18 @@ import { FIREBASE_AUTH } from "@/firebase.client";
 
 export default function Index() {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+      setLoading(false); // done checking
     });
+
+    return () => unsubscribe(); // cleanup listener on unmount
   }, []);
 
-  return <>
-  {user ? (
-    <Redirect href="/(tabs)" />
-  ) : (
-    <Redirect href="/(auth)" />
-  )}
-  </>
+  if (loading) return null; // or show splash screen
+
+  return user ? <Redirect href="/(tabs)" /> : <Redirect href="/(auth)" />;
 }

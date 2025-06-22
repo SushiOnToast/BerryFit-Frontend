@@ -28,7 +28,7 @@ export default function login() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in:", userCredential.user);
       Alert.alert("Success", "Login Successfull!");
-      router.replace("/(tabs)");
+      // router.replace("/(tabs)");
     } catch (error) {
       Alert.alert("Login Failed", error.message || "An error occurred.");
     } finally {

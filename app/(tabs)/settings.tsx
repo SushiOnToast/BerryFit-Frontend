@@ -9,7 +9,6 @@ export default function Settings() {
   const handleSignOut = async () => {
     try {
       await FIREBASE_AUTH.signOut()
-      router.replace('/(auth)/login')
     } catch (error) {
       Alert.alert('Sign Out Failed', error.message || 'An error occurred.')
     }

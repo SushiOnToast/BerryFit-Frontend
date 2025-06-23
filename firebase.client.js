@@ -4,12 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDv5fGcqNqQ5GJ8h-Sy-omVu2tpzRB-PFo",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "cs-ia-fitness-app.firebaseapp.com",
   projectId: "cs-ia-fitness-app",
-  storageBucket: "cs-ia-fitness-app.appspot.com", // <-- FIXED: use .appspot.com
-  messagingSenderId: "183147857205",
-  appId: "1:183147857205:web:568c16d2795c2e0b14f87c"
+  storageBucket: "cs-ia-fitness-app.appspot.com", 
+  messagingSenderId: process.env.FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

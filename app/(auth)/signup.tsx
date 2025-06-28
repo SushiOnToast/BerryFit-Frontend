@@ -21,7 +21,26 @@ export default function signup() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const auth = FIREBASE_AUTH; 
+  const auth = FIREBASE_AUTH;
+
+  const getPasswordStrength = (pwd: string) => {
+    let score = 0;
+    const rules = [
+      /[a-z]/, // lowercase
+      /[A-Z]/, // uppercase
+      /\d/, // digit
+      /[^A-Za-z0-9]/, // special char
+    ];
+    rules.forEach((rule) => {
+      if (rule.test(pwd)) score++;
+    });
+    if (pwd.length >= 8) score++;
+
+    if (score <= 2) return { level: "Weak", color: "bg-red-500" };
+    if (score === 3 || score === 4)
+      return { level: "Moderate", color: "bg-yellow-400" };
+    return { level: "Strong", color: "bg-green-500" };
+  };
 
   // Validation helper
   const validate = () => {
@@ -49,7 +68,11 @@ export default function signup() {
     if (!validate()) return;
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       console.log("User logged in:", userCredential.user);
       Alert.alert("Success", "Account created!");
       router.replace("/(auth)/login");
@@ -59,6 +82,8 @@ export default function signup() {
       setLoading(false);
     }
   };
+
+  const passwordStrength = getPasswordStrength(password);
 
   return (
     <KeyboardAvoidingView
@@ -73,7 +98,12 @@ export default function signup() {
 
       {/* Google Sign-In Button */}
       <TouchableOpacity className="flex-row items-center justify-center w-full py-3 bg-gray-100 rounded-full mb-4">
-        <AntDesign name="google" size={20} color="black" style={{ marginRight: 8 }} />
+        <AntDesign
+          name="google"
+          size={20}
+          color="black"
+          style={{ marginRight: 8 }}
+        />
         <Text className="text-base text-gray-800">Google</Text>
       </TouchableOpacity>
 
@@ -116,6 +146,26 @@ export default function signup() {
         className="w-full border border-gray-300 rounded-full px-4 py-3 mb-4 text-base"
         placeholderTextColor="#888"
       />
+
+      {/* Password Strength Bar */}
+      {password.length > 0 && (
+        <View className="w-full mb-2">
+          <View className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+            <View
+              className={`h-2 ${passwordStrength.color} w-[${passwordStrength.level === "Weak" ? "33" : passwordStrength.level === "Moderate" ? "66" : "100"}%]`}
+            />
+          </View>
+          <Text className="text-sm mt-1 text-gray-600">
+            Strength: {passwordStrength.level}
+          </Text>
+        </View>
+      )}
+
+      {/* Password Guidelines */}
+      <Text className="text-xs text-gray-500 mb-2">
+        Must include at least 8 characters, an uppercase letter, a number, and a
+        special symbol.
+      </Text>
 
       {/* Sign Up Button */}
       <TouchableOpacity
